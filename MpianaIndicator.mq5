@@ -9,6 +9,7 @@
 #property indicator_chart_window
 #property indicator_buffers 4
 #property indicator_plots 4
+#include <errordescription.mqh>
 //+------------------------------------------------------------------+
 //| Change Account Number and Expiry down here!                      |
 //+------------------------------------------------------------------+
@@ -98,6 +99,7 @@ int OnCalculate(const int rates_total,
    if(prev_calculated > 0) bars = rates_total - (prev_calculated - 1);
    for(int Count = 0; Count<=bars; Count++)
    {
+      if(Count>=bars-1) break;      //Array Out of Range Problem Fix.
       string candle_time = TimeToString(iTime(Symbol(), 0, Count), TIME_DATE);
       string times[3];
       StringSplit(candle_time, StringGetCharacter(".", 0), times);
@@ -148,6 +150,11 @@ int OnCalculate(const int rates_total,
       {
          SELL[Count+1] = iHigh(_Symbol, _Period, Count+1);
       }
+      else
+        {
+         BUY[Count+1] = 0;
+         SELL[Count+1] = 0;
+        }
 
 //--------------------------------
    }
