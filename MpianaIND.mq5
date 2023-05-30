@@ -9,12 +9,11 @@
 #property indicator_chart_window
 #property indicator_buffers 4
 #property indicator_plots 4
-#include <errordescription.mqh>
 //+------------------------------------------------------------------+
 //| Change Account Number and Expiry down here!                      |
 //+------------------------------------------------------------------+
 
-long   AccountNumber = 9605384;
+long   AccountNumber = 30819066;
 string ExpiryDate    = "2023.05.31";
 
 //+------------------------------------------------------------------+
@@ -129,7 +128,7 @@ int OnCalculate(const int rates_total,
          SELL[Count+1] = iHigh(_Symbol, _Period, Count+1);
       }
       
-      if(iClose(_Symbol, _Period, Count+2)<Support[Count] && iClose(_Symbol, _Period, Count+1)>Support[Count]
+      else if(iClose(_Symbol, _Period, Count+2)<Support[Count] && iClose(_Symbol, _Period, Count+1)>Support[Count]
       && iClose(_Symbol, _Period, Count+3)>Support[Count])
       {
          BUY[Count+1] = iLow(_Symbol, _Period, Count+1);
