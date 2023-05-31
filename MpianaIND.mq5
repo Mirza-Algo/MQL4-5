@@ -14,7 +14,7 @@
 //+------------------------------------------------------------------+
   
 long   AccountNumber = 30819066;
-string ExpiryDate    = "2023.05.31";
+string ExpiryDate    = "2023.06.31";
 
 //+------------------------------------------------------------------+
 //| Change Account Number and Expiry up here!                      |
@@ -80,8 +80,6 @@ int OnCalculate(const int rates_total,
       return(rates_total);
    }
 //------------------------
-   if(NewBar.CheckNewBar(_Symbol, _Period)==true)
-   {
    ArraySetAsSeries(Support, true);
    ArraySetAsSeries(Resistance, true);
    ArraySetAsSeries(BUY, true);
@@ -158,19 +156,19 @@ int OnCalculate(const int rates_total,
 //--------------------------------
    }
 //-----Alerts---------------------
-      string alert;
-      double price = iClose(_Symbol, _Period, 1);
-      if(BUY[1] != 0)
+      string alert = "";
+      if(NewBar.CheckNewBar(_Symbol, _Period)==true && BUY[1] != 0)
       {
-         StringConcatenate(alert, _Symbol, " : ", price, " : Buy Signal!");
+         double price = BUY[1];
+         StringConcatenate(alert, _Symbol, " : Price: ", price, " TimeFrame: ", _Period, " Server Time: ", TimeCurrent(), ", Local Time: ", TimeLocal(), " : Buy Signal!");
          Alert(alert); 
       }
-      else if(SELL[1] != 0)
+      else if(NewBar.CheckNewBar(_Symbol, _Period)==true && SELL[1] != 0)
       {
-         StringConcatenate(alert, _Symbol, " : ", price, " : Sell Signal!");
+         double price = SELL[1];
+         StringConcatenate(alert, _Symbol, " : Price: ", price, " TimeFrame: ", _Period, " Server Time: ", TimeCurrent(), ", Local Time: ", TimeLocal(), " : Sell Signal!");
          Alert(alert);
       }
-   };
       
 //--- return value of prev_calculated for next call
    return(rates_total);
@@ -203,7 +201,7 @@ bool CNewBar::CheckNewBar(string pSymbol,ENUM_TIMEFRAMES pTimeframe)
 	
 	if(LastTime == 0) firstRun = true;
 	
-	if(Time[0] > LastTime)
+	if(Time[0] > LastTime || firstRun==true)
 	{
 		newBar = true;
 		LastTime = Time[0];
