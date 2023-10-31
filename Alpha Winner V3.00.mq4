@@ -36,8 +36,8 @@ double StartingTP;
 double CalcAlphaUnitsTP;
 int MagicNumber = 82995;
 int BuyTicket, SellTicket;
-double glCalcAlphaUnitsTPBuySide  = 0.0;
-double glCalcAlphaUnitsTPSellSide = 0.0;
+double glCalcAlphaUnitsTPBuySide;
+double glCalcAlphaUnitsTPSellSide;
 
 double highest_unrealized_drawdown = 0.0;
 double highest_unrealized_drawdown_p = 0.0;
@@ -281,8 +281,15 @@ else if(SellMarketCount(Symbol(), MagicNumber)==0 && DayOfWeek()!=FRIDAY)
             CalcAlphaUnitsTP += PartialCalcAlphaUnitsTP;
          };
       };
-      GlobalVariableSet("CalcAlphaUnitsTPBuySide", CalcAlphaUnitsTP);
-      if(CalcAlphaUnitsTP >= AlphaUnitsTP)   CloseAllBuyOrders(Symbol(), MagicNumber);
+      if(CalcAlphaUnitsTP>GlobalVariableGet("CalcAlphaUnitsTPBuySide"))
+      {
+         GlobalVariableSet("CalcAlphaUnitsTPBuySide", CalcAlphaUnitsTP);
+      };
+      if(CalcAlphaUnitsTP >= AlphaUnitsTP)
+      {
+         CloseAllBuyOrders(Symbol(), MagicNumber);
+         GlobalVariableSet("CalcAlphaUnitsTPBuySide", 0.0);
+      };
       //---------Sell Side----------------
       CalcAlphaUnitsTP = 0;
       CurrentPrice = MarketInfo(Symbol(), MODE_ASK);
@@ -296,8 +303,15 @@ else if(SellMarketCount(Symbol(), MagicNumber)==0 && DayOfWeek()!=FRIDAY)
             CalcAlphaUnitsTP += PartialCalcAlphaUnitsTP;
          };
       };
-      GlobalVariableSet("CalcAlphaUnitsTPSellSide", CalcAlphaUnitsTP);
-      if(CalcAlphaUnitsTP >= AlphaUnitsTP)   CloseAllSellOrders(Symbol(), MagicNumber);
+      if(CalcAlphaUnitsTP>GlobalVariableGet("CalcAlphaUnitsTPSellSide"))
+      {
+         GlobalVariableSet("CalcAlphaUnitsTPSellSide", CalcAlphaUnitsTP);
+      };
+      if(CalcAlphaUnitsTP >= AlphaUnitsTP)
+      {
+         CloseAllSellOrders(Symbol(), MagicNumber);
+         GlobalVariableSet("CalcAlphaUnitsTPSellSide", 0.0);
+      };
    };
 //+------------------------------------------------------------------+
 //| Highest Unrealized Drawdown (HUD)                                |
