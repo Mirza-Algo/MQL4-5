@@ -281,6 +281,7 @@ else if(SellMarketCount(Symbol(), MagicNumber)==0 && DayOfWeek()!=FRIDAY)
             CalcAlphaUnitsTP += PartialCalcAlphaUnitsTP;
          };
       };
+      GlobalVariableSet("CalcAlphaUnitsTPBuySide", CalcAlphaUnitsTP);
       if(CalcAlphaUnitsTP >= AlphaUnitsTP)   CloseAllBuyOrders(Symbol(), MagicNumber);
       //---------Sell Side----------------
       CalcAlphaUnitsTP = 0;
@@ -295,6 +296,7 @@ else if(SellMarketCount(Symbol(), MagicNumber)==0 && DayOfWeek()!=FRIDAY)
             CalcAlphaUnitsTP += PartialCalcAlphaUnitsTP;
          };
       };
+      GlobalVariableSet("CalcAlphaUnitsTPSellSide", CalcAlphaUnitsTP);
       if(CalcAlphaUnitsTP >= AlphaUnitsTP)   CloseAllSellOrders(Symbol(), MagicNumber);
    };
 //+------------------------------------------------------------------+
